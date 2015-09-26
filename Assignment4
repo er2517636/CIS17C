@@ -1,0 +1,106 @@
+/*
+	Edward Ramirez
+	HW 3: Linked List
+	Class: 48942
+*/
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+//Student Object
+struct Student{
+	int id;			//Holds Student ID
+	string name;	//Holds Student's name
+	Student *next;	//A pointer to itself
+};
+
+//Function Prototypes
+void addStudent(Student *&, string , int);
+void print(Student *&);
+void add(Student *&);
+void remove(Student *&);
+void scroll(Student *&);
+int main()
+{
+	Student *head = NULL;
+	string choice;
+	cout << "***************************************\n";
+	cout << "* Welcome to the Student Linked-List! *\n";
+	cout << "***************************************";
+	do
+	{
+		cout << "\n\nChoose from the following:\n 1.Add student\n 2. Remove a student\n 3. Print list\n (Anything else to end)\n Choice: ";
+		getline(cin, choice);
+		if (choice == "1")
+			add(head);
+		else if (choice == "2")
+			remove(head);
+		else if (choice == "3")
+			print(head);
+	}while(choice == "1" || choice == "2" || choice == "3");
+	cout << endl << endl;
+	return 0;
+}
+//Dynamically creates a new Student Object
+void addStudent(Student *&head, string n, int id)
+{
+	Student *temp = head;
+	head = new Student;
+	head->name = n;
+	head->id = id;
+	head->next = temp;
+}
+//Collects user input and calls the function that creates a new Student object
+void add(Student *&head){
+		string name;
+		int id;
+		system("cls");
+		cout << "Enter the student's ID : ";
+		cin >> id;
+		cin.ignore();
+		cout << "Enter the student's name: ";
+		getline(cin, name);
+		cin.clear();
+		system("cls");
+		cout << "Student Successfully Added!";
+		
+		addStudent(head, name, id);
+}
+//Deletes the last entry on the Linked List
+void remove(Student *&head){
+	Student *temp = head;
+	system("cls");
+	if(head != NULL)
+		cout << "Last Student Deleted!";
+	Student *follow = head;
+	if (temp != NULL){
+		head = head->next;
+		delete temp;
+	}
+	else
+		cout <<"List is Already Empty!";
+}
+//Calls scroll in order to print the Linked List
+void print(Student *&head)
+{
+	Student *temp = head;
+	system("cls");
+	if(head == NULL)
+		cout <<"List is empty!";
+	else
+	{
+		cout <<"Student List:\n";
+		cout << "ID   Name";
+		scroll(head);
+	}	
+}
+//Recursively calls itsel until it reaches the last object on the linked list and prints them in order
+void scroll(Student *&head)
+{
+	Student *temp = head;
+	if(temp->next != NULL){
+			scroll(temp->next);
+		}
+	cout << endl << "#" << temp->id << "   " << temp->name;
+}
